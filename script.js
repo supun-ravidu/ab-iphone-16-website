@@ -1,11 +1,15 @@
-// Initialize AOS
+// ============================================
+// INITIALIZE AOS (Scroll Animations)
+// ============================================
 AOS.init({
     duration: 1000,
     once: true,
     offset: 100
 });
 
-// Custom cursor glow
+// ============================================
+// CUSTOM CURSOR GLOW
+// ============================================
 const cursor = document.querySelector('.cursor-glow');
 if (cursor) {
     document.addEventListener('mousemove', (e) => {
@@ -47,7 +51,71 @@ if (pauseBtn && bgVideo) {
 }
 
 // ============================================
-// VIDEO MODAL FOR TRAILER
+// PARTICLE BACKGROUND SYSTEM
+// ============================================
+function createParticles() {
+    const container = document.getElementById('particleContainer');
+    if (!container) return;
+    
+    const particleCount = 80;
+    const colors = ['#007aff', '#00c6fb', '#ffffff', '#ff9500', '#ff2d55'];
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        const size = Math.random() * 4 + 2;
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const duration = Math.random() * 20 + 10;
+        const delay = Math.random() * 10;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        particle.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            left: ${x}%;
+            top: ${y}%;
+            background: ${color};
+            border-radius: 50%;
+            opacity: ${Math.random() * 0.5 + 0.2};
+            animation: floatParticle ${duration}s ${delay}s infinite ease-in-out;
+            box-shadow: 0 0 ${size * 2}px ${color}40;
+            pointer-events: none;
+        `;
+        
+        container.appendChild(particle);
+    }
+}
+
+// Particle Animation Keyframes (add to CSS via JS)
+const particleStyles = document.createElement('style');
+particleStyles.textContent = `
+    @keyframes floatParticle {
+        0%, 100% {
+            transform: translate(0, 0) scale(1);
+            opacity: 0.2;
+        }
+        25% {
+            transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px) scale(1.2);
+        }
+        50% {
+            transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px) scale(0.8);
+            opacity: 0.5;
+        }
+        75% {
+            transform: translate(${Math.random() * 50 - 25}px, ${Math.random() * 50 - 25}px) scale(1.1);
+        }
+    }
+`;
+document.head.appendChild(particleStyles);
+
+// Initialize particles
+createParticles();
+
+// ============================================
+// VIDEO MODAL FOR TRAILER (Enhanced)
 // ============================================
 const videoModal = document.getElementById('videoModal');
 const trailerIframe = document.getElementById('trailerIframe');
@@ -57,14 +125,18 @@ const closeModal = document.querySelector('.close-modal');
 if (watchTrailerBtn && videoModal && trailerIframe) {
     watchTrailerBtn.addEventListener('click', () => {
         videoModal.classList.add('active');
-        trailerIframe.src = 'https://www.youtube.com/embed/VDJlWuxMnjg?autoplay=1&rel=0';
+        // Enable autoplay for better experience
+        trailerIframe.src = 'https://www.youtube.com/embed/VDJlWuxMnjg?autoplay=1&rel=0&modestbranding=1&showinfo=0';
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
     });
 }
 
 if (closeModal && videoModal && trailerIframe) {
     closeModal.addEventListener('click', () => {
         videoModal.classList.remove('active');
-        trailerIframe.src = 'https://www.youtube.com/embed/VDJlWuxMnjg?rel=0';
+        trailerIframe.src = 'https://www.youtube.com/embed/VDJlWuxMnjg?rel=0&modestbranding=1&showinfo=0';
+        document.body.style.overflow = '';
     });
 }
 
@@ -72,10 +144,52 @@ if (videoModal && trailerIframe) {
     videoModal.addEventListener('click', (e) => {
         if (e.target === videoModal) {
             videoModal.classList.remove('active');
-            trailerIframe.src = 'https://www.youtube.com/embed/VDJlWuxMnjg?rel=0';
+            trailerIframe.src = 'https://www.youtube.com/embed/VDJlWuxMnjg?rel=0&modestbranding=1&showinfo=0';
+            document.body.style.overflow = '';
         }
     });
 }
+
+// ============================================
+// ADD FLOATING PARTICLES TO THE MODAL
+// ============================================
+function addModalParticles() {
+    const modal = document.querySelector('.video-modal');
+    if (!modal) return;
+    
+    const particleContainer = document.createElement('div');
+    particleContainer.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: -1;
+    `;
+    
+    for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        const size = Math.random() * 3 + 1;
+        particle.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: floatParticle ${Math.random() * 15 + 10}s ${Math.random() * 5}s infinite ease-in-out;
+        `;
+        particleContainer.appendChild(particle);
+    }
+    
+    modal.appendChild(particleContainer);
+}
+
+// Call this after modal is created
+document.addEventListener('DOMContentLoaded', addModalParticles);
 
 // ============================================
 // NEWSLETTER FORM
@@ -222,13 +336,19 @@ document.querySelectorAll('.gallery-item').forEach(item => {
 });
 
 // ============================================
-// PARALLAX EFFECT
+// PARALLAX EFFECT FOR HERO
 // ============================================
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const hero = document.querySelector('.hero');
+    const phone = document.querySelector('.phone-3d');
+    
     if (hero) {
-        hero.style.transform = `translateY(${scrolled * 0.2}px)`;
+        hero.style.transform = `translateY(${scrolled * 0.15}px)`;
+    }
+    
+    if (phone) {
+        phone.style.transform = `rotateY(${scrolled * 0.03}deg) rotateX(${scrolled * 0.02}deg)`;
     }
 });
 
@@ -419,23 +539,6 @@ if (bgVideo) {
 }
 
 // ============================================
-// CONSOLE WELCOME MESSAGES
-// ============================================
-console.log('%c📱 AB iPhone 16 Pro', 'color: #007aff; font-size: 24px; font-weight: bold;');
-console.log('%c🎬 Video background playing!', 'color: #ff9500; font-size: 14px;');
-console.log('%c✨ Click "Watch trailer" to see the official concept video', 'color: #00c6fb; font-size: 12px;');
-console.log('%c📧 Subscribe to our newsletter for exclusive updates!', 'color: #34c759; font-size: 12px;');
-console.log('%c🔄 Compare iPhone models in the comparison section', 'color: #ff2d55; font-size: 12px;');
-
-// ============================================
-// LOADING COMPLETE
-// ============================================
-window.addEventListener('load', () => {
-    document.body.style.opacity = '1';
-    console.log('✅ Website fully loaded! Ready to experience iPhone 16.');
-});
-
-// ============================================
 // KEYBOARD SHORTCUTS
 // ============================================
 document.addEventListener('keydown', (e) => {
@@ -443,8 +546,14 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && videoModal && videoModal.classList.contains('active')) {
         videoModal.classList.remove('active');
         if (trailerIframe) {
-            trailerIframe.src = 'https://www.youtube.com/embed/VDJlWuxMnjg?rel=0';
+            trailerIframe.src = 'https://www.youtube.com/embed/VDJlWuxMnjg?rel=0&modestbranding=1&showinfo=0';
         }
+        document.body.style.overflow = '';
+    }
+    
+    // T key to open trailer
+    if (e.key === 't' && watchTrailerBtn) {
+        watchTrailerBtn.click();
     }
     
     // M key to toggle mute
@@ -474,4 +583,68 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-console.log('🎮 Keyboard shortcuts: [M] Mute | [Space] Play/Pause | [Esc] Close video');
+// ============================================
+// CONSOLE WELCOME MESSAGES
+// ============================================
+console.log('%c📱 AB iPhone 16 Pro - Cinematic Experience', 'color: #007aff; font-size: 24px; font-weight: bold;');
+console.log('%c✨ Hero section features animated particle background', 'color: #00c6fb; font-size: 14px;');
+console.log('%c🎬 Click "Watch trailer" to see the official concept video', 'color: #ff9500; font-size: 14px;');
+console.log('%c⌨️ Keyboard shortcuts: [T] Trailer | [M] Mute | [Space] Play/Pause | [Esc] Close', 'color: #34c759; font-size: 12px;');
+console.log('%c📧 Subscribe to our newsletter for exclusive updates!', 'color: #ff2d55; font-size: 12px;');
+
+// ============================================
+// LOADING COMPLETE
+// ============================================
+window.addEventListener('load', () => {
+    document.body.style.opacity = '1';
+    console.log('✅ Website fully loaded! Ready to experience iPhone 16.');
+});
+
+// ============================================
+// AMBIENT SOUND EFFECT (Optional)
+// ============================================
+// Create subtle ambient sound effect using Web Audio API
+// This creates a subtle background ambiance - uncomment to enable
+/*
+function createAmbientSound() {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.value = 0.03; // Very subtle
+        
+        const oscillator = audioCtx.createOscillator();
+        oscillator.frequency.value = 80;
+        oscillator.type = 'sine';
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        
+        document.addEventListener('click', () => {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        });
+        
+        // Uncomment to start ambient sound
+        // oscillator.start();
+    } catch (e) {
+        // Silently fail - ambient sound is optional
+    }
+}
+// createAmbientSound();
+*/
+
+// ============================================
+// SMOOTH SCROLL FOR "ABOUT" LINK (if exists)
+// ============================================
+const aboutLink = document.querySelector('a[href="#about"]');
+if (aboutLink) {
+    aboutLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const heroSection = document.querySelector('#hero');
+        if (heroSection) {
+            heroSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+}
+
+console.log('🎮 Keyboard shortcuts loaded!');

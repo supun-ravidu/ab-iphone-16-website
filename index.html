@@ -9,9 +9,9 @@
 </head>
 <body>
     <div class="cursor-glow"></div>
-    
-    <!-- Video Background Overlay -->
-    <div class="video-background-wrapper">
+
+    <!-- Video Background Overlay (Fallback) -->
+    <div class="video-background-wrapper" id="videoBgWrapper">
         <video autoplay muted loop playsinline id="bgVideo" class="bg-video">
             <source src="https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-smartphone-with-sci-fi-blueprint-32814-large.mp4" type="video/mp4">
             <source src="https://cdn.pixabay.com/video/2023/06/20/169119-836563041_large.mp4" type="video/mp4">
@@ -20,6 +20,7 @@
         <div class="gradient-overlay"></div>
     </div>
 
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
@@ -35,7 +36,7 @@
                 <li><a href="#gallery">Gallery</a></li>
                 <li><a href="#comparison">Compare</a></li>
                 <li><a href="#buy" class="buy-btn">Pre-order</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="#about">About</a></li>
             </ul>
             <div class="menu-icon">
                 <span></span>
@@ -45,8 +46,15 @@
         </div>
     </nav>
 
-    <!-- Hero Section with Video Background -->
+    <!-- Hero Section with Cinematic Background -->
     <section id="hero" class="hero">
+        <!-- Animated Particle Background -->
+        <div class="hero-bg-animation">
+            <div class="particle-container" id="particleContainer"></div>
+            <div class="hero-bg-gradient"></div>
+            <div class="hero-bg-glow"></div>
+        </div>
+
         <div class="hero-content">
             <div class="badge" data-aos="fade-down">
                 <span class="badge-icon">🎬</span> New Arrival
@@ -69,6 +77,7 @@
                 <button class="video-control-btn" id="pauseBtn">⏸</button>
             </div>
         </div>
+
         <div class="hero-image" data-aos="fade-left" data-aos-delay="200">
             <div class="phone-3d-container">
                 <div class="phone-3d">
@@ -80,13 +89,14 @@
                 </div>
             </div>
         </div>
+
         <div class="scroll-indicator">
             <span>Scroll to explore</span>
             <div class="mouse"></div>
         </div>
     </section>
 
-    <!-- Features Section with Enhanced Info -->
+    <!-- Features Section -->
     <section id="features" class="features">
         <h2 class="section-title" data-aos="fade-up">All-new design. <span class="gradient-text">Tough as titanium.</span></h2>
         <div class="features-grid">
@@ -190,7 +200,7 @@
         </div>
     </section>
 
-    <!-- Comparison Section (New) -->
+    <!-- Comparison Section -->
     <section id="comparison" class="comparison-section">
         <h2 class="section-title" data-aos="fade-up">Compare <span class="gradient-text">iPhone models.</span></h2>
         <div class="comparison-table" data-aos="fade-up">
@@ -332,7 +342,7 @@
                 <span>Blue Titanium</span>
             </div>
         </div>
-        
+
         <div class="gallery-grid">
             <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
                 <img src="https://images.unsplash.com/photo-1726587912121-ea21fcc57ff8?w=600&auto=format" alt="iPhone 16 Front View" class="gallery-img">
@@ -449,7 +459,7 @@
         </div>
     </section>
 
-    <!-- Newsletter Section (New) -->
+    <!-- Newsletter Section -->
     <section class="newsletter-section">
         <div class="newsletter-container" data-aos="fade-up">
             <h3>Stay updated on iPhone 16</h3>
@@ -461,6 +471,7 @@
         </div>
     </section>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-columns">
@@ -505,7 +516,8 @@
         <div class="video-container">
             <button class="close-modal">&times;</button>
             <div class="video-wrapper">
-                <iframe id="trailerIframe" src="https://www.youtube.com/embed/VDJlWuxMnjg?rel=0" 
+                <iframe id="trailerIframe" 
+                        src="https://www.youtube.com/embed/VDJlWuxMnjg?rel=0&modestbranding=1&showinfo=0" 
                         title="iPhone 16 Official Trailer"
                         frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
