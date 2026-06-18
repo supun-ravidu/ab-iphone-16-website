@@ -1,0 +1,19 @@
+# Create .gitignore file
+echo "# Dependencies" > .gitignore
+echo "node_modules/" >> .gitignore
+echo "package-lock.json" >> .gitignore
+echo "" >> .gitignore
+echo "# OS files" >> .gitignore
+echo ".DS_Store" >> .gitignore
+echo "Thumbs.db" >> .gitignore
+echo "desktop.ini" >> .gitignore
+echo "" >> .gitignore
+echo "# Editor files" >> .gitignore
+echo ".vscode/" >> .gitignore
+echo ".idea/" >> .gitignore
+echo "*.swp" >> .gitignore
+echo "*.swo" >> .gitignore
+echo "" >> .gitignore
+echo "# Temporary files" >> .gitignore
+echo "*.tmp" >> .gitignore
+echo "*.log" >> .gitignore
